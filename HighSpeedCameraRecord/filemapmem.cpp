@@ -49,6 +49,7 @@ filemapmem::filemapmem(const char* fname, const char* mname)
 }
 
 
+
 // Îö¹¹
 filemapmem::~filemapmem()
 {

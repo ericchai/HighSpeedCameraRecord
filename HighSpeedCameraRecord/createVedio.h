@@ -1,38 +1,33 @@
 #pragma once
+#include "windows.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <filesystem>
+#include <atomic>
+#include <opencv.hpp>
 
-//#include <time>
+#define IM_width                    640
+#define IM_highth                   480
+#define FPS                         790
+#define IM_size IM_width*IM_highth
+#define IM_countonemap              3000
+
 using std::filesystem::directory_iterator;
 using std::filesystem::path;
-//using std::filesystem::v1::directory_iterator;
-//using std::filesystem::v1::path;
-//using std::experimental::filesystem::v1::directory_iterator;
-//using std::experimental::filesystem::v1::path;
 
-#include <opencv.hpp>
-#include <atomic>
-#include "windows.h"
-
-#define IM_width 640
-#define IM_highth 480
-#define FPS 790
-#define IM_size IM_width*IM_highth
-
-struct SharedMemory
-{
-	UINT index;                 // 相机回调索引
-	UINT  TimeStampL;           // 相机帧时间戳低位
-	UINT  TimeStampH;           // 相机帧时间戳高位
-	unsigned char data[IM_size];
-
-	int  hCamera;                //相机句柄
-	int  capturetime;            //录像时间
-	HANDLE hfile;
-};
+//struct SharedMemory
+//{
+//	UINT index;                 // 相机回调索引
+//	UINT  TimeStampL;           // 相机帧时间戳低位
+//	UINT  TimeStampH;           // 相机帧时间戳高位
+//	unsigned char data[IM_size];
+//
+//	int  hCamera;                //相机句柄
+//	int  capturetime;            //录像时间
+//	HANDLE hfile;
+//};
 
 struct imdata
 {
@@ -41,8 +36,8 @@ struct imdata
 	{
 		std::memset(data, 0, IM_size);
 	}
-	UINT index;             // 相机回调索引
-	unsigned char data[IM_size];
+	UINT index;                       // 相机回调索引
+	unsigned char data[IM_size];      // 该帧的数据
 };
 
 

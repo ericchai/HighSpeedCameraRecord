@@ -6,15 +6,13 @@
 
 // 构造
 CreateVedio::CreateVedio()
+	:fps(60.0)
+	,w(IM_width)
+	,h(IM_highth)
+	,datapath("c:\\usb30data")
+	,vediopath("D:\\DATAOUTPUT\\vedio")
+	,impath("D:\\DATAOUTPUT\\image")
 {
-	fps = 60.0;
-	w = 640;
-	h = 480;
-	datapath = "c:\\usb30data";                   // .dat文件路径
-	vediopath = "D:\\DATAOUTPUT\\vedio";
-	impath = "D:\\DATAOUTPUT\\image";
-	//std::vector<int64> imstamps;//从data中读取每一行的时间戳数据，然后
-	//pData = nullptr;
 	BGim = cv::Mat::zeros(cv::Size(w, h), CV_8UC1);
 	genBGim();
 }
@@ -29,12 +27,11 @@ void CreateVedio::handleDatFile(std::string datname)
 	cv::Mat im(IM_highth, IM_width, CV_8UC1);
 	ReadFileContent(datname.c_str(), pData, dwSize);
 	//int imnum = dwSize / sizeof(imdata);
-	int imnum = 3000;
+	int imnum = IM_countonemap;
 	for (int i = 0; i < imnum; ++i)
 	{
 		std::memcpy(onedata, pData, sizeof(imdata));
 		im.data = onedata->data;
-		//im.data = pData;		
 		std::string fmt = impath + "\\%d.bmp";
 		char tempstrpath[256];
 		int temstrlenpath = snprintf(tempstrpath, sizeof(tempstrpath), fmt.c_str(), onedata->index);
@@ -56,7 +53,7 @@ void CreateVedio::handleDatFileByFilter(std::string datname)
 	cv::Mat im(IM_highth, IM_width, CV_8UC1);
 	ReadFileContent(datname.c_str(), pData, dwSize);
 	//int imnum = dwSize / sizeof(imdata);
-	int imnum = 3000;
+	int imnum = IM_countonemap;
 	for (int i = 0; i < imnum; ++i)
 	{
 		std::memcpy(onedata, pData, sizeof(imdata));
@@ -84,9 +81,7 @@ void CreateVedio::readData2imMuti()
 	for (auto& v : directory_iterator(datapath))
 	{
 		std::string fileName = v.path().filename().string();
-		//std::cout << "fileName= " << fileName << std::endl;
 		std::string extensionName = v.path().extension().string();
-		//std::cout << "extensionName= " << extensionName << std::endl;
 		//如果后缀是“dat”，则是需要读取的数据
 		if (extensionName == ".dat")
 		{
@@ -102,9 +97,7 @@ void CreateVedio::readData2imMutiByFilter()
 	for (auto& v : directory_iterator(datapath))
 	{
 		std::string fileName = v.path().filename().string();
-		//std::cout << "fileName= " << fileName << std::endl;
 		std::string extensionName = v.path().extension().string();
-		//std::cout << "extensionName= " << extensionName << std::endl;
 		//如果后缀是“dat”，则是需要读取的数据
 		if (extensionName == ".dat")
 		{
@@ -122,11 +115,8 @@ void CreateVedio::readData2imSingle()
 	cv::Mat im(IM_highth, IM_width, CV_8UC1);
 	for (auto& v : directory_iterator(datapath))
 	{
-		//
 		std::string fileName = v.path().filename().string();
-		//std::cout << "fileName= " << fileName << std::endl;
 		std::string extensionName = v.path().extension().string();
-		//std::cout << "extensionName= " << extensionName << std::endl;
 		//如果后缀是“dat”，则是需要读取的数据
 		if (extensionName == ".dat")
 		{
@@ -134,12 +124,11 @@ void CreateVedio::readData2imSingle()
 			DWORD dwSize;
 			ReadFileContent(v.path().string().c_str(), pData, dwSize);
 			//int imnum = dwSize / sizeof(imdata);
-			int imnum = 3000;
+			int imnum = IM_countonemap;
 			for (int i = 0; i < imnum; ++i)
 			{
 				std::memcpy(onedata, pData, sizeof(imdata));
 				im.data = onedata->data;
-				//im.data = pData;
 
 				std::string fmt = impath + "\\%d.bmp";
 				char tempstrpath[256];
@@ -165,7 +154,6 @@ void CreateVedio::genBGim()
 	PBYTE pData;
 	DWORD dwSize;
 
-	// ReadFileContent((LPCTSTR)v.path().string().c_str(), pData, dwSize);
 	ReadFileContent(path0.c_str(), pData, dwSize);
 	for (int i = 100; i < 200; ++i)  //只计算100-110之间10张的平均
 	{
@@ -209,11 +197,8 @@ void CreateVedio::im2vedio()
 	std::vector<std::string> imnames;
 	for (auto& v : directory_iterator(impath))
 	{
-		//
 		std::string fileName = v.path().string();
-		//std::cout << "fileName= " << fileName << std::endl;
 		std::string extensionName = v.path().extension().string();
-		//std::cout << "extensionName= " << extensionName << std::endl;
 		//如果后缀是“dat”，则是需要读取的数据
 		PBYTE pData;
 		DWORD dwSize;
@@ -242,9 +227,6 @@ void CreateVedio::im2vedio()
 
 	cv::VideoWriter writer;
 	std::string video_name = vediopath + name;
-	//fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v')   //.mp4
-	//fourcc = cv::VideoWriter::fourcc('m', 'p', 'e', 'g')   //
-	//fourcc = cv::VideoWriter::fourcc(*'mpeg')
 	//writer =cv::VideoWriter(video_name, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, cv::Size(w, h), false);
 	writer = cv::VideoWriter(video_name, cv::CAP_OPENCV_MJPEG, fps, cv::Size(w, h), false);
 	//writer.open(video_name, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, cv::Size(w, h), false); //open方法是先要调用release方法，再构造

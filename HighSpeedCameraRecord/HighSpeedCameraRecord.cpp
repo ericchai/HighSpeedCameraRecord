@@ -27,17 +27,16 @@ using namespace std;
 using namespace cv;
 
 // ---------------------------------------------------------------------------
-#define WIDTH            640
-#define HEIGHT           480
-#define SIZEIMAGE        307200
-#define TOTALSIZEIMAGE   307204
+#define WIDTH            IM_width
+#define HEIGHT           IM_highth
+#define SIZEIMAGE        IM_size
+#define TOTALSIZEIMAGE   IM_size+4
 #define MAPCOUNT         10
-#define IMAGECOUNTINMAP  3000
+#define IMAGECOUNTINMAP  IM_countonemap
 filemapmem* f1[MAPCOUNT];
 bool creatflag[MAPCOUNT];
 
 uint deleteMapcount{ 0 };
-
 
 HANDLE hFile;
 HANDLE hFileMapping;
@@ -364,7 +363,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf(CameraGetErrorString(status));
 		return FALSE;
 	}
-
 
 	//Get properties description for this camera.
 	//"获得该相机的特性描述"

@@ -8,13 +8,12 @@ class filemapmem
 {
 public:
 	filemapmem(const char* fname,const char* mname);
+	filemapmem(filemapmem& fm) = delete;
+	filemapmem(filemapmem&& fmtemp) = delete;
 	~filemapmem();
 public:
 	HANDLE hFile;
 	HANDLE hFileMapping;
 	LPVOID pMapHandle;
-
-	//std::string fName;
-	//std::string mName;
 };
 
