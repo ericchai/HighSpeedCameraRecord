@@ -9,4 +9,4 @@
 
 4. 相机驱动：MiniSVision Camera Platform Setup(2.1.10.129).zip
 
-5. 编译器：MSVC2019
+5. 编译环境：MSVC2019
