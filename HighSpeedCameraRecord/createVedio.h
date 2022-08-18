@@ -71,8 +71,7 @@ public:
 };
 
 int deleteAllFile(const char* filedir);
-int deleteAllFile(std::string&& filedir);
-int deleteAllFile(std::string& filedir);
+int deleteAllFile(const std::string& filedir);
 int deleteAllFile(std::string filedir);
 
 DWORD WINAPI ReadFileContent(LPCTSTR lpPath, PBYTE& pData, DWORD& dwSize);

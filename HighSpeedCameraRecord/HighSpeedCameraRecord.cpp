@@ -14,6 +14,8 @@
 #include "createVedio.h"
 #include <CameraApi.h>
 
+#include <format>
+
 #include <process.h>
 #include <SDKDDKVer.h>
 
@@ -444,12 +446,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	// 处理文件
 	CreateVedio cvv;
 	//cvv.readData2im();
-	//cvv.readData2imMuti();
-	cvv.readData2imMutiByFilter();
+	cvv.readData2imMuti();
+	//cvv.readData2imMutiByFilter();
 	// 图片处理线程是join，阻塞模式
 	//std::cout << "bmp图片生成完成！" << std::endl;
-	orderBmpAndChangeName("d:\\DATAOUTPUT\\image");
-	cvv.im2vediobyff();
+	//orderBmpAndChangeName("d:\\DATAOUTPUT\\image");
+	//cvv.im2vediobyff();
 	//std::cout << "视频生成完成！" << std::endl;
 
 	std::cout << "输入d删除原始文件和图片文件退出，或者等待10s不删除自动退出" << std::endl;

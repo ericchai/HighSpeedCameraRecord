@@ -1,4 +1,7 @@
 #include "createVedio.h"
+#include <iostream>
+#include <fstream>
+#include <memory>
 
 
 // 背景阈值
@@ -21,12 +24,11 @@ CreateVedio::CreateVedio()
 // 线程函数，不带背景过滤
 void CreateVedio::handleDatFile(std::string datname)
 {
-	PBYTE pData;
+	PBYTE pData=nullptr;
 	DWORD dwSize;
 	imdata* onedata = new imdata();
 	cv::Mat im(IM_highth, IM_width, CV_8UC1);
-	ReadFileContent(datname.c_str(), pData, dwSize);
-	//int imnum = dwSize / sizeof(imdata);
+	ReadFileContent(datname.c_str(),pData,dwSize);
 	int imnum = IM_countonemap;
 	for (int i = 0; i < imnum; ++i)
 	{
@@ -309,13 +311,7 @@ int deleteAllFile(const char* filedir)
 }
 
 // 删除一个文件夹下的所有文件
-int deleteAllFile(std::string&& filedir)
-{
-	return deleteAllFile(filedir.c_str());
-}
-
-// 删除一个文件夹下的所有文件
-int deleteAllFile(std::string& filedir)
+int deleteAllFile(const std::string& filedir)
 {
 	return deleteAllFile(filedir.c_str());
 }
@@ -387,6 +383,4 @@ DWORD WINAPI ReadFileContent(LPCTSTR lpPath, PBYTE& pData, DWORD& dwSize)
 	CloseHandle(hFile);                                             //  关闭文件句柄，避免句柄泄露
 	return dwErr;                                                   //  返回错误值，NO_ERROR 代表没有任何错误
 }
-
-
 
